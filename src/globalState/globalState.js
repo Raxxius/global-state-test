@@ -1,17 +1,16 @@
-const globalState = {
-  stateValues: {},
+let stateValues = {};
 
+const globalState = {
   setStateValue(key, value) {
-    this.stateValues = { ...this.stateValues, [key]: value };
-    console.log("State value updated - Key:", key, "Value:", value);
+    stateValues = { ...stateValues, [key]: value };
   },
 
   getValueByKey(key) {
-    return this.stateValues[key];
+    return stateValues[key];
   },
 
   getAllValues() {
-    return this.stateValues;
+    return stateValues;
   },
 };
 

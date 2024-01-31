@@ -1,11 +1,9 @@
 async function fetchDataAndUpdateState(url, key, setStateValue) {
-  sessionStorage.setItem("stateUpdateAvailable", false);
   try {
     const response = await fetch(url);
     const data = await response.json();
     setStateValue(key, { ...data });
-    sessionStorage.setItem("stateUpdateAvailable", true);
-    console.log(sessionStorage);
+    sessionStorage.setItem("stateUpdateAvailable", key);
     // Trigger the storage event manually after changes
     window.dispatchEvent(new Event("storage"));
   } catch (error) {
