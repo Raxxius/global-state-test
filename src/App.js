@@ -1,23 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useEffect, useState } from "react";
+import globalState from "./globalState/globalState";
 
 function App() {
+  const [styles, setStyles] = useState({});
+
+  console.log(globalState.getAllValues());
+
+  useEffect(() => {
+    console.log(sessionStorage.stateUpdateAvailable);
+
+    // handleStorageChange function
+    const handleStorageChange = () => {
+      if (sessionStorage.stateUpdateAvailable) {
+        console.log("handleStorageChange engaged");
+        setStyles(globalState.getAllValues());
+        sessionStorage.setItem("stateUpdateAvailable", false);
+        console.log(sessionStorage);
+      }
+    };
+
+    // Event listener
+    window.addEventListener("storage", handleStorageChange);
+    console.log("event listener engaged");
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Style List</h1>
+      <ul>
+        {Object.entries(styles).map(([key, value]) => (
+          <li key={key}>
+            <strong>{key}:</strong> {value}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
